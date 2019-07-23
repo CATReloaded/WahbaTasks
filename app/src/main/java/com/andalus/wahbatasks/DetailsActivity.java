@@ -36,26 +36,22 @@ public class DetailsActivity extends AppCompatActivity {
         //Inventory x=list.get(1);
 
 
-//        if(intent.hasExtra("image"))
-//        {
-//            Integer y= Integer.parseInt(intent.getStringExtra("image"));
-//            imageView.setImageDrawable(this.getResources().getDrawable(y));
-//        }
+        if(intent.hasExtra("image"))
+        {
+            int y=intent.getExtras().getInt("image");
+            imageView.setImageDrawable(this.getResources().getDrawable(y));
+        }
 
         if(intent.hasExtra("name"))
         {
             String y=intent.getStringExtra("name");
-            //name.setText(x.getName());
             Log.d(TAG,y);
             name.setText(y);
         }
         else if(intent.hasExtra("size"))
         {
             String y=intent.getStringExtra("size");
-            //name.setText(x.getSize());
-            name.setText(y);
+            size.setText(y);
         }
-
-
     }
 }
