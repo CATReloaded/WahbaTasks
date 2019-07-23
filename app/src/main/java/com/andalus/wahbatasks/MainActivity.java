@@ -1,21 +1,27 @@
 package com.andalus.wahbatasks;
 
+import android.content.Intent;
+import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements Adapter.ListItemClickListener {
 
     RecyclerView rv;
-    LinearLayoutManager linearLayoutManager;
+    //LinearLayoutManager linearLayoutManager;
     List<Inventory> list;
     Adapter adapter;
     int numOfColumns=3;
+    private static final String TAG =MainActivity.class.getName();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,12 +45,33 @@ public class MainActivity extends AppCompatActivity {
         list.add(new Inventory(R.drawable.cat7,"cat7","30MB"));
 
         rv=(RecyclerView)findViewById(R.id.recycler_view);
-        linearLayoutManager=new LinearLayoutManager(this);
+        //linearLayoutManager=new LinearLayoutManager(this);
         //rv.setLayoutManager(linearLayoutManager);
         rv.setLayoutManager(new GridLayoutManager(this, numOfColumns));
         rv.setHasFixedSize(true);
 
-        adapter=new Adapter(this,list);
+        adapter=new Adapter(list, this);
         rv.setAdapter(adapter);
+    }
+
+    @Override
+    public void onListItemClickListener(List<Inventory> list, int position) {
+
+        Intent intent = new Intent(this, DetailsActivity.class);
+
+        Inventory x=list.get(position);
+
+        int imageInteger=x.getImage();
+        String nameString=x.getName();
+        String sizeString=x.getSize();
+        Log.d(TAG, ""+imageInteger);
+        Log.d(TAG, nameString);
+        Log.d(TAG, sizeString);
+
+
+        intent.putExtra("image",imageInteger);
+        intent.putExtra("name",nameString);
+        intent.putExtra("size",sizeString);
+        startActivity(intent);
     }
 }

@@ -1,6 +1,8 @@
 package com.andalus.wahbatasks;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Parcelable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,10 +18,17 @@ public class Adapter extends RecyclerView.Adapter<Adapter.viewHolder>
 {
     List<Inventory> list;
     Context context;
+    private ListItemClickListener mOnListItemClick;
 
-    public Adapter(Context x, List<Inventory> list) {
+
+    public Adapter( List<Inventory> list, ListItemClickListener listItemClickListener) {
         this.list = list;
-        this.context=x;
+        this.mOnListItemClick=listItemClickListener;
+    }
+
+    public interface ListItemClickListener
+    {
+        void onListItemClickListener(List<Inventory> list, int index);
     }
 
     @Override
@@ -42,7 +52,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.viewHolder>
         return list.size();
     }
 
-    public class viewHolder extends RecyclerView.ViewHolder
+    public class viewHolder extends RecyclerView.ViewHolder implements View.OnClickListener
     {
         ImageView imageView;
         TextView nameTextView;
@@ -53,6 +63,14 @@ public class Adapter extends RecyclerView.Adapter<Adapter.viewHolder>
             imageView=(ImageView)itemView.findViewById(R.id.image_view);
             nameTextView=(TextView)itemView.findViewById(R.id.name_text_view);
             sizeTextView=(TextView)itemView.findViewById(R.id.size_text_view);
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            int position=getAdapterPosition();
+            mOnListItemClick.onListItemClickListener(list, position);
+
         }
     }
 }
