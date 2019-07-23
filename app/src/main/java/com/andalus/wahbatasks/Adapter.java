@@ -26,7 +26,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.viewHolder> {
     }
 
     public interface ListItemClickListener {
-        void onListItemClickListener(List<Inventory> list, int index);
+        void onListItemClickListener(Inventory inventory);
     }
 
     @Override
@@ -65,7 +65,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.viewHolder> {
         @Override
         public void onClick(View v) {
             int position = getAdapterPosition();
-            mOnListItemClick.onListItemClickListener(list, position);
+            mOnListItemClick.onListItemClickListener(list.get(position));
 
         }
     }

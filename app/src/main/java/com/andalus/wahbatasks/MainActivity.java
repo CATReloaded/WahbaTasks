@@ -55,23 +55,10 @@ public class MainActivity extends AppCompatActivity implements Adapter.ListItemC
     }
 
     @Override
-    public void onListItemClickListener(List<Inventory> list, int position) {
+    public void onListItemClickListener(Inventory inventory) {
 
         Intent intent = new Intent(this, DetailsActivity.class);
-
-        Inventory x=list.get(position);
-
-        int imageInteger=x.getImage();
-        String nameString=x.getName();
-        String sizeString=x.getSize();
-        Log.d(TAG, ""+imageInteger);
-        Log.d(TAG, nameString);
-        Log.d(TAG, sizeString);
-
-
-        intent.putExtra("image",imageInteger);
-        intent.putExtra("name",nameString);
-        intent.putExtra("size",sizeString);
+        intent.putExtra(Constants.INVENTORY_KEY,inventory);
         startActivity(intent);
     }
 }

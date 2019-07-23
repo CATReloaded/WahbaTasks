@@ -1,10 +1,12 @@
 package com.andalus.wahbatasks;
 
-public class Inventory
+import java.io.Serializable;
+
+public class Inventory implements Serializable
 {
-    int image;
-    String name;
-    String size;
+    private int image;
+    private String name;
+    private String size;
 
     public Inventory(int image, String text,String size) {
         this.image = image;
