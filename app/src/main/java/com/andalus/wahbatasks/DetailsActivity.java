@@ -48,7 +48,7 @@ public class DetailsActivity extends AppCompatActivity {
             Log.d(TAG,y);
             name.setText(y);
         }
-        else if(intent.hasExtra("size"))
+        if(intent.hasExtra("size"))
         {
             String y=intent.getStringExtra("size");
             size.setText(y);

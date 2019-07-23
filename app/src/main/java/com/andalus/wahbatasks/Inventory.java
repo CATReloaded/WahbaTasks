@@ -6,10 +6,10 @@ public class Inventory
     String name;
     String size;
 
-    public Inventory(int image, String text,String s) {
+    public Inventory(int image, String text,String size) {
         this.image = image;
         this.name = text;
-        this.size=s;
+        this.size=size;
     }
 
     public int getImage() {
