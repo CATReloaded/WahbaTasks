@@ -8,57 +8,50 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements Adapter.ListItemClickListener {
+public class MainActivity extends AppCompatActivity {
 
-    RecyclerView rv;
-    //LinearLayoutManager linearLayoutManager;
-    List<Inventory> list;
-    Adapter adapter;
-    int numOfColumns=3;
     private static final String TAG =MainActivity.class.getName();
 
+    TextView textView;
+    EditText editText;
+    private String data="";
+    private static final String KEY="key";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        list=new ArrayList<>();
-        list.add(new Inventory(R.drawable.cat1,"cat1","12MB"));
-        list.add(new Inventory(R.drawable.cat2,"cat2","7MB"));
-        list.add(new Inventory(R.drawable.cat3,"cat3","87MB"));
-        list.add(new Inventory(R.drawable.cat4,"cat4","1MB"));
-        list.add(new Inventory(R.drawable.cat5,"cat5","12MB"));
-        list.add(new Inventory(R.drawable.cat6,"cat6","45MB"));
-        list.add(new Inventory(R.drawable.cat7,"cat7","30MB"));
+        textView=(TextView)findViewById(R.id.text_view);
+        editText=(EditText)findViewById(R.id.edit_text);
 
-        list.add(new Inventory(R.drawable.cat1,"cat1","12MB"));
-        list.add(new Inventory(R.drawable.cat2,"cat2","7MB"));
-        list.add(new Inventory(R.drawable.cat3,"cat3","87MB"));
-        list.add(new Inventory(R.drawable.cat4,"cat4","1MB"));
-        list.add(new Inventory(R.drawable.cat5,"cat5","12MB"));
-        list.add(new Inventory(R.drawable.cat6,"cat6","45MB"));
-        list.add(new Inventory(R.drawable.cat7,"cat7","30MB"));
+        if(savedInstanceState !=null)
+        {
+            if(savedInstanceState.containsKey(KEY))
+            {
+                String rotated=savedInstanceState.getString(KEY);
+                textView.setText(rotated);
+            }
+        }
 
-        rv=(RecyclerView)findViewById(R.id.recycler_view);
-        //linearLayoutManager=new LinearLayoutManager(this);
-        //rv.setLayoutManager(linearLayoutManager);
-        rv.setLayoutManager(new GridLayoutManager(this, numOfColumns));
-        rv.setHasFixedSize(true);
+    }
 
-        adapter=new Adapter(list, this);
-        rv.setAdapter(adapter);
+    protected void press(View view)
+    {
+        data=editText.getText().toString().trim();
+        textView.setText(data);
     }
 
     @Override
-    public void onListItemClickListener(Inventory inventory) {
-
-        Intent intent = new Intent(this, DetailsActivity.class);
-        intent.putExtra(Constants.INVENTORY_KEY,inventory);
-        startActivity(intent);
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString(KEY,data);
     }
 }
