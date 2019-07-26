@@ -38,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
             {
                 String rotated=savedInstanceState.getString(KEY);
                 textView.setText(rotated);
+                //editText.setText(rotated);
             }
         }
 
