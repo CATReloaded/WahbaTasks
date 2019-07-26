@@ -53,6 +53,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
+        data=textView.getText().toString().trim();
+        // i get the fucking data from the fucking textView cause when i rotated the fucking phone more than one time
+        // the data at the fucking textView has disappear
         outState.putString(KEY,data);
     }
 }
