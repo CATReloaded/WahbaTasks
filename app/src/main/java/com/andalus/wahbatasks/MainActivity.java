@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    protected void press(View view)
+    public void press(View view)
     {
         data=editText.getText().toString().trim();
         textView.setText(data);
