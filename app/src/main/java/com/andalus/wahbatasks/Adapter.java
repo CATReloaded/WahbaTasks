@@ -10,23 +10,28 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.andalus.wahbatasks.database.TaskDao;
+import com.andalus.wahbatasks.database.TaskEntry;
+
+import org.w3c.dom.Text;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Adapter extends RecyclerView.Adapter<Adapter.viewHolder> {
-    private List<Inventory> list;
     private Context context;
     private ListItemClickListener mOnListItemClick;
+    private List<TaskEntry> tasks;
+    private Context mContext;
 
-
-    public Adapter(List<Inventory> list, ListItemClickListener listItemClickListener) {
-        this.list = list;
+    public Adapter(Context context, ListItemClickListener listItemClickListener) {
         this.mOnListItemClick = listItemClickListener;
+        this.mContext=context;
     }
 
     public interface ListItemClickListener {
-        void onListItemClickListener(Inventory inventory);
+        void onListItemClickListener(int itemId);
     }
 
     @Override
@@ -37,36 +42,43 @@ public class Adapter extends RecyclerView.Adapter<Adapter.viewHolder> {
     }
 
     @Override
-    public void onBindViewHolder(viewHolder viewHolder, int i) {
-        Inventory inventory = list.get(i);
-        viewHolder.nameTextView.setText(inventory.getName());
-        viewHolder.sizeTextView.setText(inventory.getSize());
-        viewHolder.imageView.setImageDrawable(context.getResources().getDrawable(inventory.getImage()));
+    public void onBindViewHolder(viewHolder viewHolder, int position)
+    {
+        TaskEntry task= tasks.get(position);
+        viewHolder.nameTextView.setText(task.getName());
+        viewHolder.eyeColorTextView.setText(task.getEyeColor());
     }
 
     @Override
     public int getItemCount() {
-        return list.size();
+        if(tasks !=null) return tasks.size();
+        else return 0;
+    }
+    public List<TaskEntry> getTasks() {
+        return tasks;
+    }
+
+    public void setTasks(List<TaskEntry> taskEntries) {
+        tasks = taskEntries;
+        notifyDataSetChanged();
     }
 
     public class viewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        ImageView imageView;
-        TextView nameTextView;
-        TextView sizeTextView;
 
+        TextView nameTextView;
+        TextView eyeColorTextView;
         public viewHolder(View itemView) {
             super(itemView);
-            imageView = itemView.findViewById(R.id.image_view);
-            nameTextView = itemView.findViewById(R.id.name_text_view);
-            sizeTextView = itemView.findViewById(R.id.size_text_view);
+            nameTextView=(TextView)itemView.findViewById(R.id.name_text_view);
+            eyeColorTextView=(TextView)itemView.findViewById(R.id.eye_color_text_view);
             itemView.setOnClickListener(this);
         }
 
         @Override
-        public void onClick(View v) {
-            int position = getAdapterPosition();
-            mOnListItemClick.onListItemClickListener(list.get(position));
-
+        public void onClick(View v)
+        {
+            int taskId=tasks.get(getAdapterPosition()).getId();
+            mOnListItemClick.onListItemClickListener(taskId);
         }
     }
 }

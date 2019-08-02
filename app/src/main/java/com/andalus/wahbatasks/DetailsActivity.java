@@ -1,42 +1,99 @@
 package com.andalus.wahbatasks;
 
-import android.annotation.TargetApi;
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
-import android.os.Build;
-import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.ImageView;
-import android.widget.TextView;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.andalus.wahbatasks.database.AppDatebase;
+import com.andalus.wahbatasks.database.TaskEntry;
 
 public class DetailsActivity extends AppCompatActivity {
 
-    List<Inventory> list;
-    ImageView imageView;
-    TextView name;
-    TextView size;
-    private static final String TAG = DetailsActivity.class.getName();
-
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    private int id_to_choose_update_or_delete= 2;
+    private int taskid=id_to_choose_update_or_delete;
+    private AppDatebase mDb;
+    Button mButton;
+    EditText nameEditText;
+    EditText eyeColorEditText;
+    String nameData;
+    String colorData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
 
-        imageView = (ImageView) findViewById(R.id.image_detail);
-        name = (TextView) findViewById(R.id.name_detail);
-        size = (TextView) findViewById(R.id.size_detail);
-        list = new ArrayList<>();
+        mDb=AppDatebase.getInstance(getApplicationContext());
+        initView();
+        getDataAndPutInEditView();
 
-        Intent intent = getIntent();
+    }
+    private void initView()
+    {
+        mButton=(Button)findViewById(R.id.save_or_update);
+        nameEditText=(EditText)findViewById(R.id.name_edit_text);
+        eyeColorEditText=(EditText)findViewById(R.id.eye_color_edit_text);
+        mButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                saveData();
+            }
+        });
+    }
+    private void saveData()
+    {
+        String name=nameEditText.getText().toString().trim();
+        String eyeColor=eyeColorEditText.getText().toString().trim();
+        final TaskEntry task=new TaskEntry(name, eyeColor);
+        AppExecuter.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                if(taskid==id_to_choose_update_or_delete)
+                {
+                    mDb.taskDao().insertTask(task);
+                }
+                else
+                {
+                    task.setId(taskid);
+                    mDb.taskDao().updateTask(task);
+                }
+                finish();
+            }
+        });
+    }
+    private void getDataAndPutInEditView()
+    {
+        Intent intent=getIntent();
+        if(intent !=null)
+        {
+            if(intent.hasExtra(MainActivity.ID)) taskid=intent.getExtras().getInt(MainActivity.ID);
+//            if(intent.hasExtra(MainActivity.KEY_NAME)) { nameData=intent.getStringExtra(MainActivity.KEY_NAME); }
+//            if(intent.hasExtra(MainActivity.KEY_COLOR)) { colorData=intent.getStringExtra(MainActivity.KEY_COLOR);}
+//            nameEditText.setText(nameData);
+//            eyeColorEditText.setText(colorData);
+        }
+        AddViewModelFactory factory=new AddViewModelFactory(mDb, taskid);
+        final AddTaskViewModel viewModel= ViewModelProviders.of(this, factory).get(AddTaskViewModel.class);
+        viewModel.getTask().observe(this, new Observer<TaskEntry>() {
+            @Override
+            public void onChanged(@Nullable TaskEntry taskEntry) {
+                viewModel.getTask().removeObserver(this);
+                populateUI(taskEntry);
+            }
+        });
+    }
+    private void populateUI(TaskEntry task) {
+        if (task == null) {
+            return;
+        }
 
-        Inventory inventory = (Inventory) intent.getExtras().getSerializable(Constants.INVENTORY_KEY);
-        imageView.setImageResource(inventory.getImage());
-        name.setText(inventory.getName());
-        size.setText(inventory.getSize());
-
+        nameEditText.setText(task.getName());
+        eyeColorEditText.setText(task.getEyeColor());
     }
 }
