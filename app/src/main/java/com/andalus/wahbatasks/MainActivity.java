@@ -3,6 +3,7 @@ package com.andalus.wahbatasks;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -12,6 +13,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
@@ -22,7 +25,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements Adapter.ListItemClickListener {
+public class MainActivity extends AppCompatActivity implements Adapter.ListItemClickListener, SharedPreferences.OnSharedPreferenceChangeListener {
 
     RecyclerView rv;
     LinearLayoutManager linearLayoutManager;
@@ -99,4 +102,41 @@ public class MainActivity extends AppCompatActivity implements Adapter.ListItemC
         startActivity(intent);
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        getMenuInflater().inflate(R.menu.settings_menu,menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        int itemId=item.getItemId();
+        if (itemId == R.id.settings)
+        {
+            Intent intent=new Intent(MainActivity.this, SettingsActivity.class);
+            startActivity(intent);
+        }
+
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key)
+    {
+        if(key.equals(getString(R.string.list_key)))
+        {
+            String color=sharedPreferences.getString(getString(R.string.list_key),getString(R.string.default_value));
+            AddViewModelFactoryEyeColor factoryEyeColor =new AddViewModelFactoryEyeColor(mDb, color);
+            AddTaskViewModel viewModel=ViewModelProviders.of(this, factoryEyeColor).get(AddTaskViewModel.class);
+            viewModel.getTasks().observe(this, new Observer<List<TaskEntry>>() {
+                @Override
+                public void onChanged(@Nullable List<TaskEntry> taskEntries) {
+                    adapter.setTasks(taskEntries);
+                }
+            });
+        }
+    }
 }
