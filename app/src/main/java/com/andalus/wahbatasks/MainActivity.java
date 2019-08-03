@@ -35,8 +35,6 @@ public class MainActivity extends AppCompatActivity implements Adapter.ListItemC
     public static final String KEY_COLOR="key_color";
     public static final String ID="id";
 
-    List<TaskEntry> list;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,7 +47,7 @@ public class MainActivity extends AppCompatActivity implements Adapter.ListItemC
         rv.setHasFixedSize(true);
         adapter=new Adapter( this, this);
         rv.setAdapter(adapter);
-        mDb=AppDatebase.getInstance(getApplicationContext());
+
         button=(Button)findViewById(R.id.go_to_details);
 
         new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
@@ -79,7 +77,7 @@ public class MainActivity extends AppCompatActivity implements Adapter.ListItemC
                 startActivity(intent);
             }
         });
-        list=adapter.getTasks();
+        mDb=AppDatebase.getInstance(getApplicationContext());
         setupViewModel();
     }
 
@@ -97,10 +95,6 @@ public class MainActivity extends AppCompatActivity implements Adapter.ListItemC
     @Override
     public void onListItemClickListener(int itemId) {
         Intent intent=new Intent(MainActivity.this, DetailsActivity.class);
-        String name= list.get(itemId).getName();
-        String eyeColor=list.get(itemId).getEyeColor();
-        intent.putExtra(KEY_NAME, name);
-        intent.putExtra(KEY_COLOR,eyeColor);
         intent.putExtra(ID, itemId);
         startActivity(intent);
     }

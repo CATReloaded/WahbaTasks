@@ -29,6 +29,7 @@ public class DetailsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
 
+
         mDb=AppDatebase.getInstance(getApplicationContext());
         initView();
         getDataAndPutInEditView();
@@ -72,11 +73,10 @@ public class DetailsActivity extends AppCompatActivity {
         Intent intent=getIntent();
         if(intent !=null)
         {
-            if(intent.hasExtra(MainActivity.ID)) taskid=intent.getExtras().getInt(MainActivity.ID);
-//            if(intent.hasExtra(MainActivity.KEY_NAME)) { nameData=intent.getStringExtra(MainActivity.KEY_NAME); }
-//            if(intent.hasExtra(MainActivity.KEY_COLOR)) { colorData=intent.getStringExtra(MainActivity.KEY_COLOR);}
-//            nameEditText.setText(nameData);
-//            eyeColorEditText.setText(colorData);
+            mButton.setText("update");
+            if(intent.hasExtra(MainActivity.ID))
+                taskid=intent.getExtras().getInt(MainActivity.ID);
+
         }
         AddViewModelFactory factory=new AddViewModelFactory(mDb, taskid);
         final AddTaskViewModel viewModel= ViewModelProviders.of(this, factory).get(AddTaskViewModel.class);

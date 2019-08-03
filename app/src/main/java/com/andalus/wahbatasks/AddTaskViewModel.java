@@ -11,7 +11,7 @@ public class AddTaskViewModel extends ViewModel
     private LiveData<TaskEntry> task;
 
     public AddTaskViewModel(AppDatebase appDatebase, int id) {
-        task=appDatebase.taskDao().loadTaskByEyeColor("blue");
+        task=appDatebase.taskDao().loadTaskById(id);
     }
     public LiveData<TaskEntry> getTask() {
         return task;
