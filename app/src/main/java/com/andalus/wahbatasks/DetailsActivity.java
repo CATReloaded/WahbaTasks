@@ -73,9 +73,8 @@ public class DetailsActivity extends AppCompatActivity {
         Intent intent=getIntent();
         if(intent !=null)
         {
-            mButton.setText("update");
             if(intent.hasExtra(MainActivity.ID))
-                taskid=intent.getExtras().getInt(MainActivity.ID);
+            taskid=intent.getExtras().getInt(MainActivity.ID);
 
         }
         AddViewModelFactory factory=new AddViewModelFactory(mDb, taskid);

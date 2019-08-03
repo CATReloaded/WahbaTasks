@@ -8,8 +8,8 @@
     </array>
 
     <array name="list_pref_values">
-    <item>@string/list_blue</item>
-    <item>@string/list_red</item>
-    <item>@string/list_green</item>
+    <item>@string/list_blue_value</item>
+    <item>@string/list_red_value</item>
+    <item>@string/list_green_value</item>
     </array>
 </resources>
