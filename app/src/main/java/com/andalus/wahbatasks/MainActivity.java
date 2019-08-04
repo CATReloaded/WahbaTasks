@@ -81,6 +81,7 @@ public class MainActivity extends AppCompatActivity implements Adapter.ListItemC
         });
         setupViewModel();
         PreferenceManager.getDefaultSharedPreferences(this).registerOnSharedPreferenceChangeListener(this);
+
     }
 
     private void setupSharedPreferences()
