@@ -8,7 +8,7 @@ import android.content.Context;
 @Database(entities = {TaskEntry.class}, version = 1, exportSchema = false)
 public abstract class AppDatebase extends RoomDatabase
 {
-    private static final String DATABSASE_NAME="name";
+    private static final String DATABSASE_NAME="table";
     private static final Object LOCK=new Object();
     private static  AppDatebase sInstance;
 

@@ -5,7 +5,7 @@
 
     <string name="list_key">KEY</string>
     <string name="title">Eye Color</string>
-    <string name="default_value">blue</string>
+    <string name="default_value">Blue</string>
 
     <string name="list_blue">Blue</string>
     <string name="list_red">Red</string>

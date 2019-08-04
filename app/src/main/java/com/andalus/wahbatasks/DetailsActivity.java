@@ -21,8 +21,6 @@ public class DetailsActivity extends AppCompatActivity {
     Button mButton;
     EditText nameEditText;
     EditText eyeColorEditText;
-    String nameData;
-    String colorData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,18 +32,19 @@ public class DetailsActivity extends AppCompatActivity {
         initView();
         getDataAndPutInEditView();
 
-    }
-    private void initView()
-    {
-        mButton=(Button)findViewById(R.id.save_or_update);
-        nameEditText=(EditText)findViewById(R.id.name_edit_text);
-        eyeColorEditText=(EditText)findViewById(R.id.eye_color_edit_text);
         mButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 saveData();
             }
         });
+    }
+    private void initView()
+    {
+        mButton=(Button)findViewById(R.id.save_or_update);
+        nameEditText=(EditText)findViewById(R.id.name_edit_text);
+        eyeColorEditText=(EditText)findViewById(R.id.eye_color_edit_text);
+
     }
     private void saveData()
     {
@@ -55,7 +54,7 @@ public class DetailsActivity extends AppCompatActivity {
         AppExecuter.getInstance().diskIO().execute(new Runnable() {
             @Override
             public void run() {
-                if(taskid==id_to_choose_update_or_delete)
+                if(taskid == id_to_choose_update_or_delete)
                 {
                     mDb.taskDao().insertTask(task);
                 }
@@ -71,21 +70,22 @@ public class DetailsActivity extends AppCompatActivity {
     private void getDataAndPutInEditView()
     {
         Intent intent=getIntent();
-        if(intent !=null)
-        {
-            if(intent.hasExtra(MainActivity.ID))
-            taskid=intent.getExtras().getInt(MainActivity.ID);
+        if(intent !=null) {
+            if (intent.hasExtra(MainActivity.ID))
+            {
+                taskid = intent.getExtras().getInt(MainActivity.ID);
 
-        }
-        AddViewModelFactory factory=new AddViewModelFactory(mDb, taskid);
-        final AddTaskViewModel viewModel= ViewModelProviders.of(this, factory).get(AddTaskViewModel.class);
-        viewModel.getTask().observe(this, new Observer<TaskEntry>() {
-            @Override
-            public void onChanged(@Nullable TaskEntry taskEntry) {
-                viewModel.getTask().removeObserver(this);
-                populateUI(taskEntry);
+                AddViewModelFactory factory = new AddViewModelFactory(mDb, taskid);
+                final AddTaskViewModel viewModel = ViewModelProviders.of(this, factory).get(AddTaskViewModel.class);
+                viewModel.getTask().observe(this, new Observer<TaskEntry>() {
+                    @Override
+                    public void onChanged(@Nullable TaskEntry taskEntry) {
+                        viewModel.getTask().removeObserver(this);
+                        populateUI(taskEntry);
+                    }
+                });
             }
-        });
+        }
     }
     private void populateUI(TaskEntry task) {
         if (task == null) {

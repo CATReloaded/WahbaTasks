@@ -35,8 +35,6 @@ public class MainActivity extends AppCompatActivity implements Adapter.ListItemC
     private static final String TAG =MainActivity.class.getName();
     private AppDatebase mDb;
     Button button;
-    public static final String KEY_NAME="key_name";
-    public static final String KEY_COLOR="key_color";
     public static final String ID="id";
 
     @Override
@@ -51,8 +49,9 @@ public class MainActivity extends AppCompatActivity implements Adapter.ListItemC
         rv.setHasFixedSize(true);
         adapter=new Adapter( this, this);
         rv.setAdapter(adapter);
-
         button=(Button)findViewById(R.id.go_to_details);
+        mDb=AppDatebase.getInstance(getApplicationContext());
+        setupSharedPreferences();
 
         new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
             @Override
@@ -62,7 +61,6 @@ public class MainActivity extends AppCompatActivity implements Adapter.ListItemC
 
             @Override
             public void onSwiped(final RecyclerView.ViewHolder viewHolder, int swipeDir) {
-                // Here is where you'll implement swipe to delete
                 AppExecuter.getInstance().diskIO().execute(new Runnable() {
                     @Override
                     public void run() {
@@ -81,9 +79,22 @@ public class MainActivity extends AppCompatActivity implements Adapter.ListItemC
                 startActivity(intent);
             }
         });
-        mDb=AppDatebase.getInstance(getApplicationContext());
         setupViewModel();
         PreferenceManager.getDefaultSharedPreferences(this).registerOnSharedPreferenceChangeListener(this);
+    }
+
+    private void setupSharedPreferences()
+    {
+        SharedPreferences sharedPreferences =PreferenceManager.getDefaultSharedPreferences(this);
+        String color = sharedPreferences.getString(getString(R.string.list_key),getString(R.string.default_value));
+        AddViewModelFactoryEyeColor factoryEyeColor =new AddViewModelFactoryEyeColor(mDb, color);
+        AddTaskViewModel viewModel=ViewModelProviders.of(this, factoryEyeColor).get(AddTaskViewModel.class);
+        viewModel.getTasks().observe(this, new Observer<List<TaskEntry>>() {
+            @Override
+            public void onChanged(@Nullable List<TaskEntry> taskEntries) {
+                adapter.setTasks(taskEntries);
+            }
+        });
     }
 
     public void setupViewModel()
@@ -120,8 +131,6 @@ public class MainActivity extends AppCompatActivity implements Adapter.ListItemC
             Intent intent=new Intent(MainActivity.this, SettingsActivity.class);
             startActivity(intent);
         }
-
-
         return super.onOptionsItemSelected(item);
     }
 
