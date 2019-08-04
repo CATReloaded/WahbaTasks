@@ -80,23 +80,24 @@ public class MainActivity extends AppCompatActivity implements Adapter.ListItemC
             }
         });
         setupViewModel();
+        setupSharedPreferences();
         PreferenceManager.getDefaultSharedPreferences(this).registerOnSharedPreferenceChangeListener(this);
 
     }
-//
-//    private void setupSharedPreferences()
-//    {
-//        SharedPreferences sharedPreferences =PreferenceManager.getDefaultSharedPreferences(this);
-//        String color = sharedPreferences.getString(getString(R.string.list_key),getString(R.string.default_value));
-//        AddViewModelFactoryEyeColor factoryEyeColor =new AddViewModelFactoryEyeColor(mDb, color);
-//        AddTaskViewModel viewModel=ViewModelProviders.of(this, factoryEyeColor).get(AddTaskViewModel.class);
-//        viewModel.getTasks().observe(this, new Observer<List<TaskEntry>>() {
-//            @Override
-//            public void onChanged(@Nullable List<TaskEntry> taskEntries) {
-//                adapter.setTasks(taskEntries);
-//            }
-//        });
-//    }
+
+    private void setupSharedPreferences()
+    {
+        SharedPreferences sharedPreferences =PreferenceManager.getDefaultSharedPreferences(this);
+        String color = sharedPreferences.getString(getString(R.string.list_key),getString(R.string.list_blue_value));
+        AddViewModelFactoryEyeColor factoryEyeColor =new AddViewModelFactoryEyeColor(mDb, color);
+        AddTaskViewModel viewModel=ViewModelProviders.of(this, factoryEyeColor).get(AddTaskViewModel.class);
+        viewModel.getTasks().observe(this, new Observer<List<TaskEntry>>() {
+            @Override
+            public void onChanged(@Nullable List<TaskEntry> taskEntries) {
+                adapter.setTasks(taskEntries);
+            }
+        });
+    }
 
     public void setupViewModel()
     {
@@ -140,7 +141,7 @@ public class MainActivity extends AppCompatActivity implements Adapter.ListItemC
     {
         if(key.equals(getString(R.string.list_key)))
         {
-            String color=sharedPreferences.getString(key,getString(R.string.default_value));
+            String color=sharedPreferences.getString(key,getString(R.string.list_blue_value));
             AddViewModelFactoryEyeColor factoryEyeColor =new AddViewModelFactoryEyeColor(mDb, color);
             AddTaskViewModel viewModel=ViewModelProviders.of(this, factoryEyeColor).get(AddTaskViewModel.class);
             viewModel.getTasks().observe(this, new Observer<List<TaskEntry>>() {
