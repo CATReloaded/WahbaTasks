@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity implements Adapter.ListItemC
         rv.setAdapter(adapter);
         button=(Button)findViewById(R.id.go_to_details);
         mDb=AppDatebase.getInstance(getApplicationContext());
-        setupSharedPreferences();
+        //setupSharedPreferences();
 
         new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
             @Override
@@ -83,20 +83,20 @@ public class MainActivity extends AppCompatActivity implements Adapter.ListItemC
         PreferenceManager.getDefaultSharedPreferences(this).registerOnSharedPreferenceChangeListener(this);
 
     }
-
-    private void setupSharedPreferences()
-    {
-        SharedPreferences sharedPreferences =PreferenceManager.getDefaultSharedPreferences(this);
-        String color = sharedPreferences.getString(getString(R.string.list_key),getString(R.string.default_value));
-        AddViewModelFactoryEyeColor factoryEyeColor =new AddViewModelFactoryEyeColor(mDb, color);
-        AddTaskViewModel viewModel=ViewModelProviders.of(this, factoryEyeColor).get(AddTaskViewModel.class);
-        viewModel.getTasks().observe(this, new Observer<List<TaskEntry>>() {
-            @Override
-            public void onChanged(@Nullable List<TaskEntry> taskEntries) {
-                adapter.setTasks(taskEntries);
-            }
-        });
-    }
+//
+//    private void setupSharedPreferences()
+//    {
+//        SharedPreferences sharedPreferences =PreferenceManager.getDefaultSharedPreferences(this);
+//        String color = sharedPreferences.getString(getString(R.string.list_key),getString(R.string.default_value));
+//        AddViewModelFactoryEyeColor factoryEyeColor =new AddViewModelFactoryEyeColor(mDb, color);
+//        AddTaskViewModel viewModel=ViewModelProviders.of(this, factoryEyeColor).get(AddTaskViewModel.class);
+//        viewModel.getTasks().observe(this, new Observer<List<TaskEntry>>() {
+//            @Override
+//            public void onChanged(@Nullable List<TaskEntry> taskEntries) {
+//                adapter.setTasks(taskEntries);
+//            }
+//        });
+//    }
 
     public void setupViewModel()
     {

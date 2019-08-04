@@ -35,7 +35,10 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
         {
             ListPreference listPreference=(ListPreference) preference;
             int index=listPreference.findIndexOfValue(value);
-            if(index>0) listPreference.setSummary(listPreference.getEntries()[index]);
+            if(index>=0)
+            {
+                listPreference.setSummary(listPreference.getEntries()[index]);
+            }
         }
     }
 
@@ -59,8 +62,8 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
+    public void onDestroy() {
+        super.onDestroy();
         getPreferenceScreen().getSharedPreferences().unregisterOnSharedPreferenceChangeListener(this);
 
     }
