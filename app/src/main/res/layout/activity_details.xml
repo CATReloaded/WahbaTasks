@@ -9,6 +9,7 @@
 
     <EditText
         android:id="@+id/name_edit_text"
+        android:hint="enter name"
         android:layout_width="match_parent"
         android:layout_height="100dp"
         android:layout_marginTop="16dp"
@@ -19,6 +20,7 @@
 
     <EditText
         android:id="@+id/eye_color_edit_text"
+        android:hint="enter eyeColor"
         android:layout_width="match_parent"
         android:layout_height="100dp"
         android:layout_marginTop="8dp"
@@ -39,7 +41,8 @@
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginBottom="8dp"
-        android:text="save/update"
+        android:text="Save"
+        android:textAllCaps="false"
         android:id="@+id/save_or_update"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

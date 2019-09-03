@@ -19,5 +19,6 @@ public class AddViewModelFactory extends ViewModelProvider.NewInstanceFactory
         //noinspection unchecked
         return (T) new AddTaskViewModel(mDb, id);
     }
+
 }
 

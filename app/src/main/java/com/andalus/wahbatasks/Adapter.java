@@ -67,8 +67,10 @@ public class Adapter extends RecyclerView.Adapter<Adapter.viewHolder> {
 
         TextView nameTextView;
         TextView eyeColorTextView;
+
         public viewHolder(View itemView) {
             super(itemView);
+
             nameTextView=(TextView)itemView.findViewById(R.id.name_text_view);
             eyeColorTextView=(TextView)itemView.findViewById(R.id.eye_color_text_view);
             itemView.setOnClickListener(this);

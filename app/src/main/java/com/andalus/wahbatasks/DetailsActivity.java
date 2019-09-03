@@ -15,8 +15,8 @@ import com.andalus.wahbatasks.database.TaskEntry;
 
 public class DetailsActivity extends AppCompatActivity {
 
-    private int id_to_choose_update_or_delete= 2;
-    private int taskid=id_to_choose_update_or_delete;
+    private int DefaultId = 2;
+    private int taskid= DefaultId;
     private AppDatebase mDb;
     Button mButton;
     EditText nameEditText;
@@ -54,7 +54,7 @@ public class DetailsActivity extends AppCompatActivity {
         AppExecuter.getInstance().diskIO().execute(new Runnable() {
             @Override
             public void run() {
-                if(taskid == id_to_choose_update_or_delete)
+                if(taskid == DefaultId)
                 {
                     mDb.taskDao().insertTask(task);
                 }
@@ -70,10 +70,15 @@ public class DetailsActivity extends AppCompatActivity {
     private void getDataAndPutInEditView()
     {
         Intent intent=getIntent();
-        if(intent !=null) {
-            if (intent.hasExtra(MainActivity.ID))
+        if(intent !=null  && intent.hasExtra(MainActivity.ID)) {
+
+            mButton.setText("Update");
+
+
+            if(taskid==DefaultId)
             {
-                taskid = intent.getExtras().getInt(MainActivity.ID);
+
+                taskid = intent.getIntExtra(MainActivity.ID, DefaultId);
 
                 AddViewModelFactory factory = new AddViewModelFactory(mDb, taskid);
                 final AddTaskViewModel viewModel = ViewModelProviders.of(this, factory).get(AddTaskViewModel.class);

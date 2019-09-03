@@ -26,12 +26,12 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements Adapter.ListItemClickListener, SharedPreferences.OnSharedPreferenceChangeListener {
+public class MainActivity extends AppCompatActivity implements
+        Adapter.ListItemClickListener, SharedPreferences.OnSharedPreferenceChangeListener {
 
     RecyclerView rv;
     LinearLayoutManager linearLayoutManager;
     Adapter adapter;
-    //int numOfColumns=3;
     private static final String TAG =MainActivity.class.getName();
     private AppDatebase mDb;
     Button button;
@@ -45,13 +45,12 @@ public class MainActivity extends AppCompatActivity implements Adapter.ListItemC
         rv=(RecyclerView)findViewById(R.id.recycler_view);
         linearLayoutManager=new LinearLayoutManager(this);
         rv.setLayoutManager(linearLayoutManager);
-        //rv.setLayoutManager(new GridLayoutManager(this, numOfColumns));
         rv.setHasFixedSize(true);
         adapter=new Adapter( this, this);
         rv.setAdapter(adapter);
         button=(Button)findViewById(R.id.go_to_details);
+
         mDb=AppDatebase.getInstance(getApplicationContext());
-        //setupSharedPreferences();
 
         new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
             @Override
@@ -81,7 +80,6 @@ public class MainActivity extends AppCompatActivity implements Adapter.ListItemC
         });
         setupViewModel();
         setupSharedPreferences();
-        PreferenceManager.getDefaultSharedPreferences(this).registerOnSharedPreferenceChangeListener(this);
 
     }
 
@@ -97,6 +95,7 @@ public class MainActivity extends AppCompatActivity implements Adapter.ListItemC
                 adapter.setTasks(taskEntries);
             }
         });
+        sharedPreferences.registerOnSharedPreferenceChangeListener(this);
     }
 
     public void setupViewModel()
@@ -142,6 +141,7 @@ public class MainActivity extends AppCompatActivity implements Adapter.ListItemC
         if(key.equals(getString(R.string.list_key)))
         {
             String color=sharedPreferences.getString(key,getString(R.string.list_blue_value));
+
             AddViewModelFactoryEyeColor factoryEyeColor =new AddViewModelFactoryEyeColor(mDb, color);
             AddTaskViewModel viewModel=ViewModelProviders.of(this, factoryEyeColor).get(AddTaskViewModel.class);
             viewModel.getTasks().observe(this, new Observer<List<TaskEntry>>() {
@@ -150,8 +150,10 @@ public class MainActivity extends AppCompatActivity implements Adapter.ListItemC
                     adapter.setTasks(taskEntries);
                 }
             });
+
+            }
         }
-    }
+
 
     @Override
     protected void onDestroy() {
