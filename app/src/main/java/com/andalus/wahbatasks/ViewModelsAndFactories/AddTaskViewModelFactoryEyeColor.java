@@ -19,6 +19,7 @@ public class AddTaskViewModelFactoryEyeColor extends ViewModelProvider.NewInstan
     public <T extends ViewModel> T create(Class<T> modelClass) {
         //noinspection unchecked
         return (T) new AddTaskViewModelEyeColor(mDb, color);
+
     }
 
 

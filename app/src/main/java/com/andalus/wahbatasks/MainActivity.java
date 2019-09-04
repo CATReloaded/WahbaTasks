@@ -1,5 +1,6 @@
 package com.andalus.wahbatasks;
 
+import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
@@ -27,7 +28,7 @@ public class MainActivity extends AppCompatActivity implements
     Adapter adapter;
     private static final String TAG =MainActivity.class.getName();
     private AppDatebase mDb;
-    Button newItemButton, searchButton;
+    Button newItemButton, searchButton, showAll;
     public static final String ID="id";
     EditText searchEditText;
 
@@ -45,6 +46,7 @@ public class MainActivity extends AppCompatActivity implements
         newItemButton =(Button)findViewById(R.id.go_to_details);
         searchEditText=findViewById(R.id.search_edit_text);
         searchButton=findViewById(R.id.search_button);
+        showAll=findViewById(R.id.all);
 
         mDb=AppDatebase.getInstance(getApplicationContext());
 
@@ -53,7 +55,6 @@ public class MainActivity extends AppCompatActivity implements
             public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
                 return false;
             }
-
             @Override
             public void onSwiped(final RecyclerView.ViewHolder viewHolder, int swipeDir) {
                 AppExecutors.getInstance().diskIO().execute(new Runnable() {
@@ -70,11 +71,9 @@ public class MainActivity extends AppCompatActivity implements
         newItemButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(MainActivity.this, DetailsActivity.class);
-                startActivity(intent);
+                startActivity(new Intent(MainActivity.this, DetailsActivity.class));
             }
         });
-        setupViewModel();
 
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -82,6 +81,16 @@ public class MainActivity extends AppCompatActivity implements
                 search();
             }
         });
+
+        showAll.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setupViewModel();
+            }
+        });
+
+        setupViewModel();
+
     }
 
     private void search()
@@ -95,6 +104,7 @@ public class MainActivity extends AppCompatActivity implements
                 adapter.setTasks(taskEntries);
             }
         });
+
     }
 
 
