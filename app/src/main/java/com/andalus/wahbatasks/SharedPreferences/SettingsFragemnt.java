@@ -1,4 +1,4 @@
-package com.andalus.wahbatasks;
+package com.andalus.wahbatasks.SharedPreferences;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -8,6 +8,8 @@ import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceFragmentCompat;
 import android.support.v7.preference.PreferenceScreen;
 
+import com.andalus.wahbatasks.R;
+
 public class SettingsFragemnt extends PreferenceFragmentCompat implements
         SharedPreferences.OnSharedPreferenceChangeListener{
 
@@ -15,7 +17,7 @@ public class SettingsFragemnt extends PreferenceFragmentCompat implements
     @Override
     public void onCreatePreferences(Bundle bundle, String s)
     {
-        addPreferencesFromResource(R.xml.pref_romm);
+        addPreferencesFromResource(R.xml.pref_room);
 
         SharedPreferences sharedPreferences=getPreferenceScreen().getSharedPreferences();
         PreferenceScreen prefScreen=getPreferenceScreen();

@@ -3,16 +3,21 @@ package com.andalus.wahbatasks;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.andalus.wahbatasks.SharedPreferences.SettingsActivity;
 import com.andalus.wahbatasks.ViewModelsAndFactories.AddTaskViewModelEyeColor;
 import com.andalus.wahbatasks.ViewModelsAndFactories.AddTaskViewModelFactoryEyeColor;
 import com.andalus.wahbatasks.database.AppDatebase;
@@ -20,7 +25,7 @@ import com.andalus.wahbatasks.database.TaskEntry;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements
-        Adapter.ListItemClickListener {
+        Adapter.ListItemClickListener, SharedPreferences.OnSharedPreferenceChangeListener {
 
     RecyclerView rv;
     LinearLayoutManager linearLayoutManager;
@@ -74,20 +79,34 @@ public class MainActivity extends AppCompatActivity implements
                 startActivity(intent);
             }
         });
-        setupViewModel();
 
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                search();
+                //setupViewModel();
+
+                searchWithEyeColor();
             }
         });
+        setupViewModel();
+
+        //searchWithEyeColor("blue");
+        //setupSharedPreferences();
     }
 
-    private void search()
+    private void setupSharedPreferences()
     {
-        String color=searchEditText.getText().toString();
-        AddTaskViewModelFactoryEyeColor factoryEyeColor=new AddTaskViewModelFactoryEyeColor(mDb, color);
+        SharedPreferences sharedPreferences= PreferenceManager.getDefaultSharedPreferences(this);
+        String eyeColor =sharedPreferences.getString(getString(R.string.key), getString(R.string.value_blue));
+        //searchWithEyeColor(eyeColor);
+        sharedPreferences.registerOnSharedPreferenceChangeListener(this);
+    }
+
+    private void searchWithEyeColor()
+    {
+        setupViewModel();
+        String colorEditText=searchEditText.getText().toString();
+        AddTaskViewModelFactoryEyeColor factoryEyeColor=new AddTaskViewModelFactoryEyeColor(mDb, colorEditText);
         AddTaskViewModelEyeColor viewModelEyeColor=ViewModelProviders.of(this, factoryEyeColor).get(AddTaskViewModelEyeColor.class);
         viewModelEyeColor.getTasks().observe(this, new Observer<List<TaskEntry>>() {
             @Override
@@ -116,4 +135,37 @@ public class MainActivity extends AppCompatActivity implements
         startActivity(intent);
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        return true;
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        int id=item.getItemId();
+        if (id==R.id.settings_item)
+        {
+            startActivity(new Intent(MainActivity.this, SettingsActivity.class));
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key)
+    {
+        if(key.equals(getString(R.string.key)))
+        {
+            String eyeColor=sharedPreferences.getString(key, getString(R.string.value_blue));
+            //searchWithEyeColor(eyeColor);
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        PreferenceManager.getDefaultSharedPreferences(this).unregisterOnSharedPreferenceChangeListener(this);
+    }
 }

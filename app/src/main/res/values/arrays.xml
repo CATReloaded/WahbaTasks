@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <array name="list_pref_labels">
-        <item>@string/list_blue</item>
-        <item>@string/list_red</item>
-        <item>@string/list_green</item>
+    <array name="labels">
+        <item>@string/label_blue</item>
+        <item>@string/label_red</item>
+        <item>@string/label_green</item>
     </array>
 
-    <array name="list_pref_values">
-    <item>@string/list_blue_value</item>
-    <item>@string/list_red_value</item>
-    <item>@string/list_green_value</item>
+    <array name="values">
+    <item>@string/value_blue</item>
+    <item>@string/value_red</item>
+    <item>@string/value_green</item>
     </array>
 </resources>

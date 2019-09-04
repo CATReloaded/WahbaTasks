@@ -2,6 +2,7 @@ package com.andalus.wahbatasks.SharedPreferences;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import com.andalus.wahbatasks.R;
 
 public class SettingsActivity extends AppCompatActivity {
 
