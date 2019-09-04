@@ -1,8 +1,7 @@
-package com.andalus.wahbatasks;
+package com.andalus.wahbatasks.ViewModelsAndFactories;
 
 import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProvider;
-import com.andalus.wahbatasks.AddTaskViewModelEyeColor;
 import com.andalus.wahbatasks.database.AppDatebase;
 
 public class AddTaskViewModelFactoryEyeColor extends ViewModelProvider.NewInstanceFactory

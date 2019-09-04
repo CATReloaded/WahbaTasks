@@ -29,5 +29,5 @@ public interface TaskDao
     LiveData<TaskEntry> loadTaskById(int id);
 
     @Query("SELECT * FROM task WHERE eyeColor = :eyeColor")
-    LiveData<List<TaskEntry>> loadTaskByEyeColor(String eyeColor);
+    LiveData<List<TaskEntry>> loadTasksByEyeColor(String eyeColor);
 }

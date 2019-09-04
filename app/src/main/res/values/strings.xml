@@ -13,5 +13,6 @@
     <string name="list_blue_value" translatable="false">blue</string>
     <string name="list_red_value" translatable="false">red</string>
     <string name="list_green_value" translatable="false">green</string>
+    <string name="details_activity">Details</string>
 
 </resources>
