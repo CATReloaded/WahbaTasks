@@ -1,29 +1,32 @@
-package com.andalus.wahbatasks;
+package com.example.android.todolist;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.NonNull;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
-public class AppExecuter
-{
+
+//Executers work as threads
+// Executers are used when using insert, update and delete
+
+public class AppExecutors {
 
     private static final Object LOCK = new Object();
-    private static AppExecuter sInstance;
-    private Executor diskIO;
-    private Executor mainThread;
-    private Executor networkIO;
+    private static AppExecutors sInstance;
+    private final Executor diskIO;
+    private final Executor mainThread;
+    private final Executor networkIO;
 
-    private AppExecuter(Executor diskIO, Executor networkIO, Executor mainThread) {
+    private AppExecutors(Executor diskIO, Executor networkIO, Executor mainThread) {
         this.diskIO = diskIO;
         this.networkIO = networkIO;
         this.mainThread = mainThread;
     }
 
-    public static AppExecuter getInstance() {
+    public static AppExecutors getInstance() {
         if (sInstance == null) {
             synchronized (LOCK) {
-                sInstance = new AppExecuter(Executors.newSingleThreadExecutor(),
+                sInstance = new AppExecutors(Executors.newSingleThreadExecutor(),
                         Executors.newFixedThreadPool(3),
                         new MainThreadExecutor());
             }

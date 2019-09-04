@@ -2,23 +2,25 @@ package com.andalus.wahbatasks;
 
 import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProvider;
+
 import com.andalus.wahbatasks.database.AppDatebase;
 
-public class AddViewModelFactory extends ViewModelProvider.NewInstanceFactory
+public class AddTaskViewModelFactoryEyeColor extends ViewModelProvider.NewInstanceFactory
 {
     private AppDatebase mDb;
-    private int id;
+    private String color;
 
-    public AddViewModelFactory(AppDatebase mDb, int id) {
-        this.mDb = mDb;
-        this.id = id;
+    public AddTaskViewModelFactoryEyeColor(AppDatebase appDatebase, String x)
+    {
+        this.mDb=appDatebase;
+        this.color=x;
     }
 
     @Override
     public <T extends ViewModel> T create(Class<T> modelClass) {
         //noinspection unchecked
-        return (T) new AddTaskViewModel(mDb, id);
+        return (T) new AddTaskViewModelEyeColor(mDb, color);
     }
 
-}
 
+}
