@@ -19,7 +19,7 @@
     <EditText
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:hint="name..."
+        android:hint="eye color..."
         android:id="@+id/eye_color_edit_text"
         />
     <Button
