@@ -18,7 +18,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener{
+public class MainActivity extends AppCompatActivity {
 
     private static final String TAG =MainActivity.class.getName();
 
@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
                 Intent intent = new Intent(MainActivity.this, TaskIntentService.class);
                 intent.setAction(PlayAudio.NEXT);
                 startService(intent);
-
+                Log.d(TAG, "next button is pressed");
             }
         });
 
@@ -62,37 +62,6 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         });
 
 
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        prefs.registerOnSharedPreferenceChangeListener(this);
     }
 
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        prefs.unregisterOnSharedPreferenceChangeListener(this);
-    }
-
-    @Override
-    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key)
-    {
-//        if(key.equals(PlayAudio.PLAY))
-//        {
-//            PlayAudio.specifyStatus(this, key);
-//        }
-//        if(key.equals(PlayAudio.NEXT))
-//        {
-//            PlayAudio.specifyStatus(this, key);
-//        }
-//        if(key.equals(PlayAudio.PAUSE))
-//        {
-//            PlayAudio.specifyStatus(this, key);
-//        }
-//        if(key.equals(PlayAudio.PREVIOUS))
-//        {
-//            PlayAudio.specifyStatus(this, key);
-//        }
-        PlayAudio.specifyStatus(this, key);
-    }
 }

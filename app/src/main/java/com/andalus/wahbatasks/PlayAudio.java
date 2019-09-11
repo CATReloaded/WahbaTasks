@@ -2,6 +2,8 @@ package com.andalus.wahbatasks;
 
 import android.content.Context;
 import android.media.MediaPlayer;
+import android.util.Log;
+import android.widget.Toast;
 
 public class PlayAudio
 {
@@ -9,9 +11,10 @@ public class PlayAudio
     public static final String PAUSE = "pause_audio";
     public static final String NEXT = "next_audio";
     public static final String PREVIOUS = "previous_audio";
+    private static final String TAG=PlayAudio.class.getName();
     static MediaPlayer player;
 
-    static int [] audioArray={R.raw.hi,R.raw.hello,
+    static int [] audioArray={R.raw.color_white,R.raw.hello,
                                 R.raw.color_black,R.raw.color_brown,
                                 R.raw.color_dusty_yellow,R.raw.color_gray,
                                 R.raw.color_green,R.raw.color_mustard_yellow,
@@ -21,14 +24,13 @@ public class PlayAudio
     {
         if(action.equals(PLAY))
         {
+            Toast.makeText(context, "hello from the other side", Toast.LENGTH_SHORT).show();
+            Log.d(TAG, "hi");
 
-            MediaPlayer x=MediaPlayer.create(context, R.raw.hi);
-            x.start();
+            if(player !=null) player.release();
 
-//
-//            int index=PreferenceUtilities.getMediaPlayerIndex(context);
-//            player=MediaPlayer.create(context, audioArray[index]);
-//            player.start();
+            player=MediaPlayer.create(context, audioArray[0]);
+            player.start();
         }
         else if(action.equals(PAUSE))
         {
@@ -36,18 +38,16 @@ public class PlayAudio
         }
         else if(action.equals(NEXT))
         {
-            player.release();
-            PreferenceUtilities.incrementMediaPlayerIndex(context);
-            int index=PreferenceUtilities.getMediaPlayerIndex(context);
-            player=MediaPlayer.create(context, audioArray[index]);
+            if(player !=null) player.release();
+
+            player=MediaPlayer.create(context, audioArray[1]);
             player.start();
         }
         else if(action.equals(PREVIOUS))
         {
-            player.release();
-            PreferenceUtilities.decrementMediaPlayerIndex(context);
-            int index=PreferenceUtilities.getMediaPlayerIndex(context);
-            player=MediaPlayer.create(context, audioArray[index]);
+            if(player !=null) player.release();
+
+            player=MediaPlayer.create(context, audioArray[2]);
             player.start();
         }
     }
